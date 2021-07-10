@@ -7,65 +7,68 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const prisma = new PrismaClient();
 
-exports.all = (req, res) => {
+exports.all = async (req, res) => {
     try {
-        const user_fk = req.user.id;
-        const user_friend_fk = req.body.user_id;
-        prisma.friends
-            .findMany({
-                where: {
-                    user_fk,
-                    user_friend_fk,
-                },
-            })
-            .then((result) => {
-                res.status(200).json({
-                    code: 200,
-                    data: result,
-                });
-            })
-            .catch((err) => {
-                return res.status(500).json({ code: 500, msg: "Internal server error" });
+        const friends = await prisma.$queryRaw`select * from friends f left join "User" u on f.user_friend_fk = u.id;`;
+
+        if (friends) {
+            res.status(200).json({
+                code: 200,
+                data: friends,
             });
+        }
     } catch (e) {
         return res.status(500).json({ code: 500, msg: "Internal server error" });
     }
 };
+
 exports.add = (req, res) => {
     try {
         const user_friend_fk = req.body.user_id;
         const user_fk = req.user.id;
-        prisma.friends
-            .findFirst({
+        prisma.user
+            .findUnique({
                 where: {
-                    user_fk,
-                    user_friend_fk,
+                    id: user_friend_fk,
                 },
             })
-            .then((result) => {
-                if (!result) {
+            .then((response) => {
+                if (response) {
                     prisma.friends
-                        .create({
-                            data: {
+                        .findFirst({
+                            where: {
                                 user_fk,
                                 user_friend_fk,
                             },
                         })
-                        .then((response) => {
-                            res.status(200).json({
-                                code: 200,
-                                msg: "friends added successfully",
-                            });
+                        .then((result) => {
+                            if (!result) {
+                                prisma.friends
+                                    .create({
+                                        data: {
+                                            user_fk,
+                                            user_friend_fk,
+                                        },
+                                    })
+                                    .then((response) => {
+                                        res.status(200).json({
+                                            code: 200,
+                                            msg: "friends added successfully",
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        res.status(500).send({ code: 500, msg: "Internal server error" });
+                                    });
+                            } else {
+                                return res.status(403).json({ code: 403, msg: "Already exists" });
+                            }
                         })
                         .catch((err) => {
-                            res.status(500).send({ code: 500, msg: "Internal server error" });
+                            return res.status(500).json({ code: 500, msg: "Internal server error" });
                         });
                 } else {
-                    return res.status(403).json({ code: 403, msg: "Already exists" });
+                    res.status(404).json({ code: 404, msg: "User not found" });
                 }
-            })
-            .catch((err) => {
-                return res.status(500).json({ code: 500, msg: "Internal server error" });
             });
     } catch (e) {
         return res.status(500).json({ code: 500, msg: "Internal server error" });
