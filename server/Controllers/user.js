@@ -83,8 +83,36 @@ exports.loginUser = (req, res) => {
                     });
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
                 res.status(500).send({ code: 500, msg: "Google Auth Failed" });
+            });
+    } catch (e) {
+        return res.status(500).json({ code: 500, msg: "Internal server error" });
+    }
+};
+
+exports.search = (req, res) => {
+    try {
+        const username = req.query.username;
+        prisma.user
+            .findUnique({
+                where: {
+                    username,
+                },
+            })
+            .then((user) => {
+                if (user) {
+                    res.status(200).json({
+                        code: 200,
+                        msg: "User found",
+                        data: user,
+                    });
+                } else {
+                    res.status(404).send({ code: 500, msg: "User not found" });
+                }
+            })
+            .catch((err) => {
+                res.status(500).send({ code: 500, msg: "Internal server error" });
             });
     } catch (e) {
         return res.status(500).json({ code: 500, msg: "Internal server error" });

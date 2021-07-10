@@ -14,7 +14,7 @@ model User {
   id     Int     @default(autoincrement()) @id
   firstname    String
   lastname    String
-  username    String?
+  username    String? @unique
   photo       String
   email    String @unique
   createdAt DateTime @default(now())
@@ -53,6 +53,7 @@ model forum {
   comment String
   reply_to Int?
   likes Int?
+  mal_id Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
