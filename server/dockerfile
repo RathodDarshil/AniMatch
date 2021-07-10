@@ -6,5 +6,10 @@ COPY . .
 EXPOSE 8080
 RUN npx prisma generate
 
+ENV DATABASE_URL="postgresql://postgres:a6s5d1f&^IDS&^@chat-app.cux8m74ubqle.ap-south-1.rds.amazonaws.com:5432/postgres"
+ENV GOOGLE_CLIENT_ID='1020854869671-mk8h2s2iburg333vqhdibqb5i1mh4jl8.apps.googleusercontent.com'
+ENV PORT='8080'
+ENV JWT_SECRET="yyrasd<^8asd9QHR:}~dLasdAcv7~;e"
+
 CMD ["node", "server.js" ]
 
