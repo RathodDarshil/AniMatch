@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id     Int     @default(autoincrement()) @id
+  firstname    String
+  lastname    String
+  username    String?
+  photo       String
+  email    String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Watch_later {
+  id     Int     @default(autoincrement()) @id
+  user_fk Int
+  mal_id Int
+  deleted Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model completed {
+  id     Int     @default(autoincrement()) @id
+  user_fk Int
+  mal_id Int
+  deleted Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model friends {
+  id     Int     @default(autoincrement()) @id
+  user_fk Int
+  user_friend_fk Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model forum {
+  id     Int     @default(autoincrement()) @id
+  user_fk Int
+  comment String
+  reply_to Int?
+  likes Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
