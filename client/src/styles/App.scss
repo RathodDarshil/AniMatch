@@ -1,35 +1,203 @@
 @import './vars';
 
-header {
-	position: sticky;
-	top: 0;
-	left: 50%;
-	padding: 0.8em;
-	@include flex($justify: space-between) // transform: translate(-50%, -50%);
-;
+a {
+	color: var(--fg1);
+	&:hover {
+		color: var(--accent);
+	}
+	&:visited {
+		color: var(--fg2);
+	}
 }
-nav {
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	// margin: 1.2em auto;
-	padding: 0.6em 0.8em;
-	background: var(--bg2);
-	border-radius: 0.6em;
-	#nav-links {
-		@include flex($justify: space-evenly);
-		li {
-			cursor: pointer;
-			padding: 0.4em 0.6em;
-			&:active {
-				transform: scale(0.95);
-			}
-			&.active svg {
-				color: var(--accent);
-			}
+
+button {
+	&.icon {
+		padding: 0.4em 0.5em;
+		background: transparent;
+		border-radius: 50%;
+		svg {
+			color: var(--fg1);
+		}
+		&:hover {
+			background: var(--bg2);
 		}
 	}
+}
+
+input {
+	cursor: text;
+	display: inline-block;
+	margin: 0 0.6rem 1rem;
+	padding: 0.4em 0.8em;
+	font-size: 16px;
+	font-weight: 600;
+	min-width: 2.8em;
+	background: var(--bg2);
+	border: solid 2px #ddd;
+	border-radius: 0.25em;
+	&:hover,
+	&:focus {
+		border-color: var(--accent);
+		outline: none;
+	}
+}
+
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='date'],
+input[type='password'] {
+	cursor: text;
+	display: inline-block;
+	margin: 0 0.6rem 1rem;
+	padding: 0.4em 0.8em;
+	font-size: 16px;
+	font-weight: 600;
+	min-width: 2.8em;
+	background: var(--bg2);
+	border: solid 2px #ddd;
+	border-radius: 0.25em;
+	&:hover,
+	&:focus {
+		border-color: var(--accent);
+		outline: none;
+	}
+}
+
+#search-results {
+	@include flex($wrap: wrap);
+	height: 80vh;
+	overflow-y: auto;
+}
+
+.search-card {
+	margin: 0.8em;
+	padding: 1em 1.2em;
+	border-radius: 0.8em;
+	width: 14em;
+	height: 18em;
+	background-repeat: no-repeat;
+	background-size: cover;
+	@include flex(
+		$justify: space-between,
+		$align: flex-start,
+		$direction: column
+	);
+	text-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+	// &::after {
+	// 	content: '';
+	// 	position: absolute;
+	// 	top: 0;
+	// 	left: 0;
+	// 	border-radius: 0.8em;
+	// 	height: 100%;
+	// 	width: 100%;
+	// 	// background: linear-gradient(0, rgba(85, 105, 133, 0.4) 50%, transparent);
+	// 	background-position: 50% 50%;
+	// }
+	.badge {
+		background-color: var(--accent);
+		padding: 0.2em 0.4em;
+		border-radius: 0.8em;
+		justify-self: flex-start;
+		color: var(--light);
+		align-self: flex-end;
+		font-size: 1em;
+		font-weight: 600;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+		&.sqr {
+			border-radius: 0.6em;
+			background-color: var(--grey);
+			font-size: 0.8em;
+			width: fit-content;
+			color: var(--bg1);
+			box-shadow: none;
+		}
+	}
+	h3,
+	p {
+		color: var(--light);
+		margin: 0.2em 0;
+		user-select: none;
+	}
+	span {
+		font-weight: 600;
+	}
+	p {
+		font-size: 0.8em;
+		margin-top: 0.6em;
+	}
+}
+
+.swipe {
+	position: absolute;
+}
+
+.cardContainer {
+	width: 90vw;
+	max-width: 260px;
+	height: 300px;
+}
+
+.card {
+	position: relative;
+	background-color: #fff;
+	width: 80vw;
+	max-width: 260px;
+	height: 300px;
+	box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
+	border-radius: 20px;
+	background-size: cover;
+	background-position: center;
+}
+
+.cardContent {
+	width: 100%;
+	height: 100%;
+}
+
+.swipe:last-of-type {
+}
+
+.card h3 {
+	position: absolute;
+	bottom: 0;
+	margin: 10px;
+	color: #fff;
+}
+
+.infoText {
+	width: 100%;
+	height: 28px;
+	justify-content: center;
+	display: flex;
+	color: #fff;
+	animation-name: popup;
+	animation-duration: 800ms;
+}
+
+.buttons {
+	margin: 20px;
+	display: flex;
+}
+
+.buttons button {
+	flex-shrink: 0;
+	padding: 10px;
+	border-radius: 5px;
+	border: none;
+	color: #fff;
+	font-size: 18px;
+	background-color: #9198e5;
+	transition: 200ms;
+	margin: 0 10px;
+	font-weight: bolder;
+	width: 160px;
+	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+}
+
+.buttons button:hover {
+	transform: scale(1.05);
 }
 
 .App {

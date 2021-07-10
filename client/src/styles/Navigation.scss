@@ -1,0 +1,35 @@
+@import './vars';
+
+header {
+	position: sticky;
+	top: 0;
+	left: 50%;
+	padding: 0.8em;
+	@include flex() // transform: translate(-50%, -50%);
+;
+}
+nav {
+	z-index: 100;
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	// margin: 1.2em auto;
+	padding: 0.6em 0.8em;
+	background: var(--bg2);
+	border-radius: 0.6em;
+	#nav-links {
+		@include flex($justify: space-evenly);
+		a {
+			cursor: pointer;
+			padding: 0.4em 0.6em;
+			user-select: none;
+			&:active {
+				transform: scale(0.95);
+			}
+			&.active svg {
+				color: var(--accent);
+			}
+		}
+	}
+}

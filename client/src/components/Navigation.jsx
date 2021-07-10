@@ -1,3 +1,4 @@
+import '../styles/Navigation.scss';
 import {
 	ThreeDotsVertical,
 	HouseDoorFill,
@@ -22,20 +23,38 @@ const Navigation = () => {
 						fill="#F16830"
 					/>
 				</svg>
-				<ThreeDotsVertical size={18} />
+				{/* <button className="icon">
+					<ThreeDotsVertical size={18} />
+				</button> */}
 			</header>
 			<nav>
-				<ul id="nav-links">
-					<NavLink to={'/'} exact activeClassName="active" component="li">
+				<div id="nav-links">
+					<NavLink
+						to={'/'}
+						exact
+						activeClassName="active"
+						component="a"
+						className="icon"
+					>
 						<HouseDoorFill size={18} />
 					</NavLink>
-					<NavLink to={'/search'} activeClassName="active" component="li">
+					<NavLink
+						to={'/search'}
+						activeClassName="active"
+						component="a"
+						className="icon"
+					>
 						<Search size={16} />
 					</NavLink>
-					<NavLink to={'/profile'} activeClassName="active" component="li">
+					<NavLink
+						to={'/profile'}
+						activeClassName="active"
+						component="a"
+						className="icon"
+					>
 						<PersonFill size={18} />
 					</NavLink>
-				</ul>
+				</div>
 			</nav>
 		</>
 	);

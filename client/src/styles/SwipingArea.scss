@@ -1,0 +1,71 @@
+@import './vars';
+
+:root {
+	overflow: hidden;
+}
+.swiping-area {
+	height: 90vh;
+	width: 28em;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.tinder-card {
+	z-index: 50;
+	position: absolute;
+}
+.swipable-card {
+	padding: 1em 1.2em;
+	border-radius: 0.8em;
+	margin: 0 auto;
+	width: 28em;
+	height: 36em;
+	background-repeat: no-repeat;
+	background-size: cover;
+	@include flex(
+		$justify: space-between,
+		$align: flex-start,
+		$direction: column
+	);
+	text-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+	// &::after {
+	// 	content: '';
+	// 	position: absolute;
+	// 	top: 0;
+	// 	left: 0;
+	// 	border-radius: 0.8em;
+	// 	height: 100%;
+	// 	width: 100%;
+	// 	// background: linear-gradient(0, rgba(85, 105, 133, 0.4) 50%, transparent);
+	// 	background-position: 50% 50%;
+	// }
+	.badge {
+		background-color: var(--accent);
+		padding: 0.2em 0.4em;
+		border-radius: 0.8em;
+		justify-self: flex-start;
+		color: var(--light);
+
+		align-self: flex-end;
+		font-size: 1.2em;
+		font-weight: 600;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+		&.sqr {
+			border-radius: 0.6em;
+			background-color: var(--grey);
+			font-size: 0.8em;
+			width: fit-content;
+			color: var(--bg1);
+			box-shadow: none;
+		}
+	}
+	h2,
+	p {
+		color: var(--light);
+		margin: 0.2em 0;
+		user-select: none;
+	}
+	p {
+		font-size: 0.8em;
+		margin-top: 0.6em;
+	}
+}
