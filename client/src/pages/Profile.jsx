@@ -46,7 +46,7 @@ export const Profile = () => {
 			</h2>
 			<ul id="anime-list">
 				<h4>Watchlist</h4>
-				{watchlist.map((ani) => (
+				{watchlist.map((ani, key) => (
 					<li key={ani.id}>
 						<h5>{ani.title}</h5>
 					</li>
@@ -55,7 +55,7 @@ export const Profile = () => {
 			<hr />
 			<ul id="anime-list">
 				<h4>Watched</h4>
-				{watched.map((ani) => (
+				{watched.map((ani, key) => (
 					<li key={ani.id} style={{ borderColor: 'var(--grey)' }}>
 						<h5>{ani.title}</h5>
 					</li>
