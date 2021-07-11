@@ -2,11 +2,11 @@ const async = require("async");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const astraClient = require("../connect-database");
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 exports.addComment = (req, res) => {
     try {
@@ -71,25 +71,6 @@ exports.mainThread = async (req, res) => {
                     }
                 });
             });
-
-            // main_thread.rows
-            //     .forEach((thread) => {
-            //         let query = `select * from hacktoon.User where id = ${thread.user_fk}`;
-            //         astraClient
-            //             .execute(query)
-            //             .then((results) => {
-            //                 main_thread.user_data = results.rows[0];
-            //             })
-            //             .catch((e) => {
-            //                 console.log(e);
-            //             });
-            //     })
-            //     .then(() => {
-            //         res.status(200).json({
-            //             code: 200,
-            //             data: main_thread,
-            //         });
-            //     });
         }
     } catch (e) {
         console.log(e);
