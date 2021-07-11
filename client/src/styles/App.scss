@@ -42,6 +42,7 @@ input {
 	background: var(--bg2);
 	border: solid 2px #ddd;
 	border-radius: 0.25em;
+	color: var(--fg1);
 	&:hover,
 	&:focus {
 		border-color: var(--accent);
@@ -151,5 +152,16 @@ input[type='password'] {
 	img {
 		margin: 0.8em;
 		border-radius: 50%;
+	}
+}
+
+#anime-list {
+	margin: 0.8em;
+	li {
+		margin: 0.8em auto;
+		padding: 0.4em;
+		border: solid 2px var(--fg2);
+		border-radius: 0.8em;
+		width: fit-content;
 	}
 }

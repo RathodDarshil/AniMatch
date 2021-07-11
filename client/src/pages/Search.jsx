@@ -1,15 +1,17 @@
 import Axios from 'axios';
 import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
 
 const uninterceptedAxios = Axios.create();
 
 export const Search = () => {
+	const [query, setQuery] = useState('');
 	let { data: animes, refetch } = useQuery(
 		'animeData',
 		async function getData() {
 			const payload = {
 				params: {
-					q: 'onepunch',
+					q: query,
 				},
 			};
 
@@ -23,9 +25,21 @@ export const Search = () => {
 			return reqData;
 		}
 	);
+
+	useEffect(() => {
+		if (query.length >= 3) refetch();
+	}, [query]);
+
 	return (
 		<div className="container">
-			<input type="search" name="search" />
+			<input
+				type="search"
+				name="search"
+				placeholder="Search for Anime, Manga, Comics and more..."
+				value={query}
+				style={{ width: '100%' }}
+				onChange={(e) => setQuery(e.target.value)}
+			/>
 			<div id="search-results">
 				{animes?.results?.map((anime) => (
 					<div

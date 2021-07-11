@@ -11,10 +11,10 @@ export const Profile = () => {
 	const getWatchlist = () => {
 		Axios.get('/watch_later/all')
 			.then((r) => {
-				console.log(r);
-				r.data.forEach((ani) => {
+				// console.log(r);
+				r.data.data.forEach((ani) => {
 					uninterceptedAxios
-						.get(`https://api.jikan.moe/v3/anime/${ani}`)
+						.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
 						.then((r) => setWatchlist([...watchlist, r.data]));
 				});
 			})
@@ -23,10 +23,10 @@ export const Profile = () => {
 	const getWatched = () => {
 		Axios.get('/completed/all')
 			.then((r) => {
-				console.log(r);
-				r.data.forEach((ani) => {
+				// console.log(r);
+				r.data.data.forEach((ani) => {
 					uninterceptedAxios
-						.get(`https://api.jikan.moe/v3/anime/${ani}`)
+						.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
 						.then((r) => setWatched([...watched, r.data]));
 				});
 			})
@@ -44,6 +44,23 @@ export const Profile = () => {
 			<h2>
 				{user.firstname} {user.lastname}
 			</h2>
+			<ul id="anime-list">
+				<h4>Watchlist</h4>
+				{watchlist.map((ani, key) => (
+					<li key={key}>
+						<h5>{ani.title}</h5>
+					</li>
+				))}
+			</ul>
+			<hr />
+			<ul id="anime-list">
+				<h4>Watched</h4>
+				{watched.map((ani, key) => (
+					<li key={key} style={{ borderColor: 'var(--grey)' }}>
+						<h5>{ani.title}</h5>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 };

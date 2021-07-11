@@ -22,8 +22,8 @@ Axios.interceptors.request.use(
 
 Axios.defaults.baseURL =
 	process.env.NODE_ENV === 'development'
-		? 'https://2397baebf980.ngrok.io'
-		: 'https://hacktoon-backend-qguqqofcsa-el.a.run.app';
+		? 'https://fbcde23f6f97.ngrok.io'
+		: 'https://fbcde23f6f97.ngrok.io';
 
 function App() {
 	return (
