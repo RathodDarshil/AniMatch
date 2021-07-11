@@ -1,0 +1,155 @@
+@import './vars';
+
+a {
+	color: var(--fg1);
+	&:hover {
+		color: var(--accent);
+	}
+	&:visited {
+		color: var(--fg2);
+	}
+}
+
+button {
+	&.icon {
+		padding: 0.4em 0.5em;
+		background: transparent;
+		border-radius: 50%;
+		svg {
+			color: var(--fg1);
+		}
+		&:hover {
+			background: var(--bg2);
+		}
+	}
+	&.outlined {
+		padding: 0.4em 0.5em;
+		color: var(--fg1);
+		background: transparent;
+		border: solid 2px var(--accent);
+		border-radius: 0.6em;
+	}
+}
+
+input {
+	cursor: text;
+	display: inline-block;
+	margin: 0 0.6rem 1rem;
+	padding: 0.4em 0.8em;
+	font-size: 16px;
+	font-weight: 600;
+	min-width: 2.8em;
+	background: var(--bg2);
+	border: solid 2px #ddd;
+	border-radius: 0.25em;
+	&:hover,
+	&:focus {
+		border-color: var(--accent);
+		outline: none;
+	}
+}
+
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='date'],
+input[type='password'] {
+	cursor: text;
+	display: inline-block;
+	margin: 0 0.6rem 1rem;
+	padding: 0.4em 0.8em;
+	font-size: 16px;
+	font-weight: 600;
+	min-width: 2.8em;
+	background: var(--bg2);
+	border: solid 2px #ddd;
+	border-radius: 0.25em;
+	&:hover,
+	&:focus {
+		border-color: var(--accent);
+		outline: none;
+	}
+}
+
+#search-results {
+	@include flex($wrap: wrap);
+	height: 80vh;
+	overflow-y: auto;
+}
+
+.search-card {
+	margin: 0.8em;
+	padding: 1em 1.2em;
+	border-radius: 0.8em;
+	width: 14em;
+	height: 18em;
+	background-repeat: no-repeat;
+	background-size: cover;
+	@include flex(
+		$justify: space-between,
+		$align: flex-start,
+		$direction: column
+	);
+	text-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+	// &::after {
+	// 	content: '';
+	// 	position: absolute;
+	// 	top: 0;
+	// 	left: 0;
+	// 	border-radius: 0.8em;
+	// 	height: 100%;
+	// 	width: 100%;
+	// 	// background: linear-gradient(0, rgba(85, 105, 133, 0.4) 50%, transparent);
+	// 	background-position: 50% 50%;
+	// }
+	.badge {
+		background-color: var(--accent);
+		padding: 0.2em 0.4em;
+		border-radius: 0.8em;
+		justify-self: flex-start;
+		color: var(--light);
+		align-self: flex-end;
+		font-size: 1em;
+		font-weight: 600;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+		&.sqr {
+			border-radius: 0.6em;
+			background-color: var(--grey);
+			font-size: 0.8em;
+			width: fit-content;
+			color: var(--bg1);
+			box-shadow: none;
+		}
+	}
+	h3,
+	p {
+		color: var(--light);
+		margin: 0.2em 0;
+		user-select: none;
+	}
+	span {
+		font-weight: 600;
+	}
+	p {
+		font-size: 0.8em;
+		margin-top: 0.6em;
+	}
+}
+
+#login {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1em 1.2em;
+	background: var(--bg2);
+	border-radius: 0.6em;
+}
+
+#profile-section {
+	text-align: center;
+	img {
+		margin: 0.8em;
+		border-radius: 50%;
+	}
+}
