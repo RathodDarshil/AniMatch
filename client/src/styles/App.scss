@@ -22,6 +22,13 @@ button {
 			background: var(--bg2);
 		}
 	}
+	&.outlined {
+		padding: 0.4em 0.5em;
+		color: var(--fg1);
+		background: transparent;
+		border: solid 2px var(--accent);
+		border-radius: 0.6em;
+	}
 }
 
 input {
@@ -129,112 +136,12 @@ input[type='password'] {
 	}
 }
 
-.swipe {
+#login {
 	position: absolute;
-}
-
-.cardContainer {
-	width: 90vw;
-	max-width: 260px;
-	height: 300px;
-}
-
-.card {
-	position: relative;
-	background-color: #fff;
-	width: 80vw;
-	max-width: 260px;
-	height: 300px;
-	box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
-	border-radius: 20px;
-	background-size: cover;
-	background-position: center;
-}
-
-.cardContent {
-	width: 100%;
-	height: 100%;
-}
-
-.swipe:last-of-type {
-}
-
-.card h3 {
-	position: absolute;
-	bottom: 0;
-	margin: 10px;
-	color: #fff;
-}
-
-.infoText {
-	width: 100%;
-	height: 28px;
-	justify-content: center;
-	display: flex;
-	color: #fff;
-	animation-name: popup;
-	animation-duration: 800ms;
-}
-
-.buttons {
-	margin: 20px;
-	display: flex;
-}
-
-.buttons button {
-	flex-shrink: 0;
-	padding: 10px;
-	border-radius: 5px;
-	border: none;
-	color: #fff;
-	font-size: 18px;
-	background-color: #9198e5;
-	transition: 200ms;
-	margin: 0 10px;
-	font-weight: bolder;
-	width: 160px;
-	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-}
-
-.buttons button:hover {
-	transform: scale(1.05);
-}
-
-.App {
-	text-align: center;
-}
-
-.App-logo {
-	height: 40vmin;
-	pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	.App-logo {
-		animation: App-logo-spin infinite 20s linear;
-	}
-}
-
-.App-header {
-	background-color: #282c34;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
-}
-
-.App-link {
-	color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 1em 1.2em;
+	background: var(--bg2);
+	border-radius: 0.6em;
 }

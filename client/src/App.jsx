@@ -1,13 +1,11 @@
-import './styles/App.scss';
 import Axios from 'axios';
-
 // import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
+import { useContext } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import { Switch, Route } from 'react-router-dom';
-import { Home, Search, Profile } from './pages';
-import { QueryClient, QueryClientProvider } from 'react-query';
-
-const queryClient = new QueryClient();
+import PrivateRoute from './components/PrivateRoute';
+import { Home, Login, Profile, Search } from './pages';
+import './styles/App.scss';
 
 Axios.interceptors.request.use(
 	function (request) {
@@ -31,23 +29,13 @@ Axios.defaults.baseURL =
 function App() {
 	return (
 		<>
-			<QueryClientProvider client={queryClient}>
-				<Navigation />
-				<Switch>
-					{/* <Route path="/contact">
-				<Contact />
-			</Route> */}
-					<Route path="/" exact>
-						<Home />
-					</Route>
-					<Route path="/search">
-						<Search />
-					</Route>
-					<Route path="/profile">
-						<Profile />
-					</Route>
-				</Switch>
-			</QueryClientProvider>
+			<Navigation />
+			<Switch>
+				<Route path="/login" component={Login} />
+				<PrivateRoute path="/" location="/" exact component={Home} />
+				<PrivateRoute path="/search" location="/search" component={Search} />
+				<PrivateRoute path="/profile" component={Profile} />
+			</Switch>
 		</>
 	);
 }
