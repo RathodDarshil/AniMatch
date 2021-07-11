@@ -5,8 +5,8 @@ const astraClient = new Client({
         secureConnectBundle: "./secure-connect-hacktoon.zip",
     },
     credentials: {
-        username: process.env.username,
-        password: process.env.password,
+        username: process.env.astrausername,
+        password: process.env.astrapassword,
     },
 });
 
