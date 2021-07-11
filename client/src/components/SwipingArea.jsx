@@ -1,4 +1,3 @@
-import { createRef, useMemo, useState } from 'react';
 import '../styles/SwipingArea.scss';
 import TinderCard from 'react-tinder-card';
 import Axios from 'axios';
@@ -7,25 +6,22 @@ import { useQuery } from 'react-query';
 const uninterceptedAxios = Axios.create();
 
 const SwipingArea = () => {
-	let { data: animes, refetch } = useQuery(
-		'animeData',
-		async function getData() {
-			const payload = {
-				params: {
-					q: 'deathnote',
-				},
-			};
+	let { data: animes } = useQuery('animeData', async function getData() {
+		const payload = {
+			params: {
+				q: 'deathnote',
+			},
+		};
 
-			const reqData = await uninterceptedAxios
-				.get('https://api.jikan.moe/v3/search/anime', payload)
-				.then((res) => {
-					return res.data;
-				})
-				.catch(console.error);
+		const reqData = await uninterceptedAxios
+			.get('https://api.jikan.moe/v3/search/anime', payload)
+			.then((res) => {
+				return res.data;
+			})
+			.catch(console.error);
 
-			return reqData;
-		}
-	);
+		return reqData;
+	});
 
 	const addToWatchlist = (id) => {
 		Axios.post('/watch_later/add', {

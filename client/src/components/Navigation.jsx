@@ -1,10 +1,5 @@
 import '../styles/Navigation.scss';
-import {
-	ThreeDotsVertical,
-	HouseDoorFill,
-	Search,
-	PersonFill,
-} from 'react-bootstrap-icons';
+import { HouseDoorFill, Search, PersonFill } from 'react-bootstrap-icons';
 import { NavLink } from 'react-router-dom';
 
 const Navigation = () => {

@@ -8,32 +8,32 @@ export const Profile = () => {
 	const { user } = useContext(Context);
 	const [watchlist, setWatchlist] = useState([]);
 	const [watched, setWatched] = useState([]);
-	const getWatchlist = () => {
-		Axios.get('/watch_later/all')
-			.then((r) => {
-				// console.log(r);
-				r.data.data.forEach((ani) => {
-					uninterceptedAxios
-						.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
-						.then((r) => setWatchlist([...watchlist, r.data]));
-				});
-			})
-			.catch(console.error);
-	};
-	const getWatched = () => {
-		Axios.get('/completed/all')
-			.then((r) => {
-				// console.log(r);
-				r.data.data.forEach((ani) => {
-					uninterceptedAxios
-						.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
-						.then((r) => setWatched([...watched, r.data]));
-				});
-			})
-			.catch(console.error);
-	};
 
 	useEffect(() => {
+		const getWatchlist = () => {
+			Axios.get('/watch_later/all')
+				.then((r) => {
+					// console.log(r);
+					r.data.data.forEach((ani) => {
+						uninterceptedAxios
+							.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
+							.then((r) => setWatchlist([...watchlist, r.data]));
+					});
+				})
+				.catch(console.error);
+		};
+		const getWatched = () => {
+			Axios.get('/completed/all')
+				.then((r) => {
+					// console.log(r);
+					r.data.data.forEach((ani) => {
+						uninterceptedAxios
+							.get(`https://api.jikan.moe/v3/anime/${ani.mal_id}`)
+							.then((r) => setWatched([...watched, r.data]));
+					});
+				})
+				.catch(console.error);
+		};
 		getWatchlist();
 		getWatched();
 	}, []);

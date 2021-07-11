@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const uninterceptedAxios = Axios.create();
 
@@ -26,9 +26,7 @@ export const Search = () => {
 		}
 	);
 
-	useEffect(() => {
-		if (query.length >= 3) refetch();
-	}, [query]);
+	if (query.length >= 3) refetch();
 
 	return (
 		<div className="container">
