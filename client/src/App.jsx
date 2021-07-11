@@ -22,8 +22,8 @@ Axios.interceptors.request.use(
 
 Axios.defaults.baseURL =
 	process.env.NODE_ENV === 'development'
-		? 'https://fbcde23f6f97.ngrok.io'
-		: 'https://fbcde23f6f97.ngrok.io';
+		? 'https://animatch-qguqqofcsa-el.a.run.app'
+		: 'https://animatch-qguqqofcsa-el.a.run.app';
 
 function App() {
 	return (
