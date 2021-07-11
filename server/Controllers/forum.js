@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const { PrismaClient } = require("@prisma/client");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const astraClient = require("../connect-database");
 
 const prisma = new PrismaClient();
 
@@ -20,15 +21,11 @@ exports.addComment = (req, res) => {
             reply_to = null;
         }
 
-        prisma.forum
-            .create({
-                data: {
-                    user_fk,
-                    comment,
-                    reply_to,
-                    mal_id,
-                },
-            })
+        let query = `insert into hacktoon.forum( id, user_fk, comment,reply_to, mal_id )
+                        values( uuid(), ${user_fk}, '${comment}', ${reply_to}, ${mal_id})`;
+
+        astraClient
+            .execute(query)
             .then((result) => {
                 res.status(200).json({
                     code: 200,
@@ -36,6 +33,8 @@ exports.addComment = (req, res) => {
                 });
             })
             .catch((err) => {
+                console.log(err);
+
                 return res.status(500).json({ code: 500, msg: "Internal server error" });
             });
     } catch (e) {
@@ -47,13 +46,50 @@ exports.addComment = (req, res) => {
 exports.mainThread = async (req, res) => {
     try {
         const mal_id = parseInt(req.query.mal_id);
-        const main_thread =
-            await prisma.$queryRaw`select * from forum f left join "User" u on f.user_fk = u.id where f.mal_id = ${mal_id} and f.reply_to is null`;
-        if (main_thread) {
-            res.status(200).json({
-                code: 200,
-                data: main_thread,
+
+        let query = `select * from hacktoon.forum where mal_id = ${mal_id} allow filtering`;
+
+        const main_thread = await astraClient.execute(query);
+
+        if (main_thread.rows.length > 0) {
+            let promise = new Promise(function (resolve, reject) {
+                main_thread.rows.forEach((thread, index) => {
+                    let query = `select * from hacktoon.User where id = ${thread.user_fk}`;
+                    astraClient
+                        .execute(query)
+                        .then((results) => {
+                            thread.user_data = results.rows[0];
+                        })
+                        .catch((e) => {
+                            console.log(e);
+                        });
+                    if (index === main_thread.length - 1) {
+                        res.status(200).json({
+                            code: 200,
+                            data: main_thread,
+                        });
+                    }
+                });
             });
+
+            // main_thread.rows
+            //     .forEach((thread) => {
+            //         let query = `select * from hacktoon.User where id = ${thread.user_fk}`;
+            //         astraClient
+            //             .execute(query)
+            //             .then((results) => {
+            //                 main_thread.user_data = results.rows[0];
+            //             })
+            //             .catch((e) => {
+            //                 console.log(e);
+            //             });
+            //     })
+            //     .then(() => {
+            //         res.status(200).json({
+            //             code: 200,
+            //             data: main_thread,
+            //         });
+            //     });
         }
     } catch (e) {
         console.log(e);

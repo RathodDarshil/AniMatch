@@ -4,26 +4,24 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const { PrismaClient } = require("@prisma/client");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const astraClient = require("../connect-database");
 
 const prisma = new PrismaClient();
 
 exports.all = (req, res) => {
     try {
         const user_id = req.user.id;
-        prisma.completed
-            .findMany({
-                where: {
-                    user_fk: user_id,
-                    deleted: null,
-                },
-            })
+        let query = `select * from hacktoon.completed where user_fk = ${user_id} and deleted = false  allow filtering`;
+        astraClient
+            .execute(query)
             .then((result) => {
                 res.status(200).json({
                     code: 200,
-                    data: result,
+                    data: result.rows,
                 });
             })
             .catch((err) => {
+                console.log(err);
                 return res.status(500).json({ code: 500, msg: "Internal server error" });
             });
     } catch (e) {
@@ -34,22 +32,18 @@ exports.add = (req, res) => {
     try {
         const mal_id = req.body.mal_id;
         const user_id = req.user.id;
-        prisma.completed
-            .findFirst({
-                where: {
-                    user_fk: user_id,
-                    mal_id,
-                },
-            })
+
+        let query = `select * from hacktoon.completed where user_fk = ${user_id} and mal_id = ${mal_id} allow filtering`;
+
+        astraClient
+            .execute(query)
             .then((result) => {
-                if (!result) {
-                    prisma.completed
-                        .create({
-                            data: {
-                                user_fk: user_id,
-                                mal_id,
-                            },
-                        })
+                if (result.rows.length === 0) {
+                    let query = `insert into hacktoon.completed( id, user_fk, mal_id, deleted)
+                                    values( uuid(), ${user_id}, ${mal_id}, false)`;
+
+                    astraClient
+                        .execute(query)
                         .then((response) => {
                             res.status(200).json({
                                 code: 200,
@@ -57,7 +51,6 @@ exports.add = (req, res) => {
                             });
                         })
                         .catch((err) => {
-                            console.log(err);
                             res.status(500).send({ code: 500, msg: "Internal server error" });
                         });
                 } else {
@@ -74,23 +67,16 @@ exports.add = (req, res) => {
 exports.delete = (req, res) => {
     try {
         const id = req.body.id;
-        prisma.completed
-            .findFirst({
-                where: {
-                    id,
-                },
-            })
+        let query = `select * from hacktoon.completed where id = ${id} allow filtering`;
+
+        astraClient
+            .execute(query)
             .then((result) => {
-                if (result) {
-                    prisma.completed
-                        .update({
-                            where: {
-                                id,
-                            },
-                            data: {
-                                deleted: true,
-                            },
-                        })
+                if (result.rows.length > 0) {
+                    let query = `update hacktoon.completed set deleted = true where id = ${id}`;
+
+                    astraClient
+                        .execute(query)
                         .then((response) => {
                             res.status(200).json({
                                 code: 200,
@@ -98,6 +84,7 @@ exports.delete = (req, res) => {
                             });
                         })
                         .catch((err) => {
+                            console.log(err);
                             return res.status(500).json({ code: 500, msg: "Error while deleting" });
                         });
                 }
