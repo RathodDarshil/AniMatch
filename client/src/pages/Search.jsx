@@ -1,20 +1,20 @@
 import Axios from 'axios';
 import { useQuery } from 'react-query';
 
+const uninterceptedAxios = Axios.create();
+
 export const Search = () => {
 	let { data: animes, refetch } = useQuery(
 		'animeData',
 		async function getData() {
 			const payload = {
 				params: {
-					q: 'naruto',
+					q: 'onepunch',
 				},
 			};
 
-			const reqData = await Axios.get(
-				'https://api.jikan.moe/v3/search/anime',
-				payload
-			)
+			const reqData = await uninterceptedAxios
+				.get('https://api.jikan.moe/v3/search/anime', payload)
 				.then((res) => {
 					return res.data;
 				})

@@ -1,6 +1,5 @@
 import Axios from 'axios';
 // import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
-import { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import PrivateRoute from './components/PrivateRoute';
@@ -23,7 +22,7 @@ Axios.interceptors.request.use(
 
 Axios.defaults.baseURL =
 	process.env.NODE_ENV === 'development'
-		? 'https://hacktoon-backend-qguqqofcsa-el.a.run.app'
+		? 'https://2397baebf980.ngrok.io'
 		: 'https://hacktoon-backend-qguqqofcsa-el.a.run.app';
 
 function App() {
@@ -32,8 +31,8 @@ function App() {
 			<Navigation />
 			<Switch>
 				<Route path="/login" component={Login} />
-				<PrivateRoute path="/" location="/" exact component={Home} />
-				<PrivateRoute path="/search" location="/search" component={Search} />
+				<PrivateRoute path="/" exact component={Home} />
+				<PrivateRoute path="/search" component={Search} />
 				<PrivateRoute path="/profile" component={Profile} />
 			</Switch>
 		</>

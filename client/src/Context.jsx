@@ -7,12 +7,14 @@ export default Context;
 
 // Provider
 export const Provider = ({ children }) => {
-	const [user, setUser] = useState(null);
+	const localUser = localStorage.getItem('user');
+	const [user, setUser] = useState(JSON.parse(localUser));
 
 	return (
 		<Context.Provider
 			value={{
 				user,
+				setUser,
 			}}
 		>
 			{children}

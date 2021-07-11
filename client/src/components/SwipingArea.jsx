@@ -4,35 +4,67 @@ import TinderCard from 'react-tinder-card';
 import Axios from 'axios';
 import { useQuery } from 'react-query';
 
+const uninterceptedAxios = Axios.create();
+
 const SwipingArea = () => {
 	let { data: animes, refetch } = useQuery(
 		'animeData',
 		async function getData() {
 			const payload = {
 				params: {
-					q: 'naruto',
+					q: 'deathnote',
 				},
 			};
 
-			const reqData = await Axios.get(
-				'https://api.jikan.moe/v3/search/anime',
-				payload
-			)
+			const reqData = await uninterceptedAxios
+				.get('https://api.jikan.moe/v3/search/anime', payload)
 				.then((res) => {
 					return res.data;
 				})
-				.catch(console.log);
+				.catch(console.error);
 
 			return reqData;
 		}
 	);
+
+	const addToWatchlist = (id) => {
+		Axios.post('/watch_later/add', {
+			mal_id: id,
+		})
+			.then((r) => console.log(r))
+			.catch(console.error);
+	};
+	const alreadyWatched = (id) => {
+		Axios.post('/completed/add', {
+			mal_id: id,
+		})
+			.then((r) => console.log(r))
+			.catch(console.error);
+	};
+
+	const onSwipe = (dir, id) => {
+		if (dir === 'right') {
+			addToWatchlist(id);
+		} else if (dir === 'up') {
+			alreadyWatched(id);
+		}
+	};
+
+	const outOfFrame = (id) => {
+		console.log(id + ' left the screen');
+	};
 
 	// console.log(data);
 	return (
 		<>
 			<div className="swiping-area">
 				{animes?.results?.map((anime) => (
-					<TinderCard className="tinder-card">
+					<TinderCard
+						className="tinder-card"
+						onSwipe={(dir) => onSwipe(dir, anime.mal_id)}
+						onCardLeftScreen={() => outOfFrame(anime.mal_id)}
+						preventSwipe={['down']}
+					>
 						<div
 							className="swipable-card"
 							style={{

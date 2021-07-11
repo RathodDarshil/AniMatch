@@ -145,3 +145,11 @@ input[type='password'] {
 	background: var(--bg2);
 	border-radius: 0.6em;
 }
+
+#profile-section {
+	text-align: center;
+	img {
+		margin: 0.8em;
+		border-radius: 50%;
+	}
+}
