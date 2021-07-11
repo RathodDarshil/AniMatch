@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/AniMatch/static/css/main.f7cea5e2.chunk.css",
-    "main.js": "/AniMatch/static/js/main.def8fa09.chunk.js",
-    "main.js.map": "/AniMatch/static/js/main.def8fa09.chunk.js.map",
+    "main.js": "/AniMatch/static/js/main.78531b58.chunk.js",
+    "main.js.map": "/AniMatch/static/js/main.78531b58.chunk.js.map",
     "runtime-main.js": "/AniMatch/static/js/runtime-main.7c6c5298.js",
     "runtime-main.js.map": "/AniMatch/static/js/runtime-main.7c6c5298.js.map",
     "static/js/2.4a17181e.chunk.js": "/AniMatch/static/js/2.4a17181e.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.7c6c5298.js",
     "static/js/2.4a17181e.chunk.js",
     "static/css/main.f7cea5e2.chunk.css",
-    "static/js/main.def8fa09.chunk.js"
+    "static/js/main.78531b58.chunk.js"
   ]
 }
