@@ -4,10 +4,9 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const { PrismaClient } = require("@prisma/client");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const astraClient = require("../connect-database");
 
-const prisma = new PrismaClient();
-
-exports.loginUser = (req, res) => {
+exports.loginUser = async (req, res) => {
     try {
         const token = req.body.token;
         client
@@ -15,23 +14,21 @@ exports.loginUser = (req, res) => {
                 idToken: token,
                 audience: process.env.GOOGLE_CLIENT_ID,
             })
-            .then((response) => {
-                prisma.user
-                    .findUnique({
-                        where: {
-                            email: response.payload.email,
-                        },
-                    })
+            .then(async (response) => {
+                let query = `select * from hacktoon.user where email = '${response.payload.email}' allow filtering`;
+
+                astraClient
+                    .execute(query)
                     .then((user) => {
-                        if (user) {
+                        if (user.rows.length > 0) {
                             const token = jwt.sign(
                                 {
-                                    id: user.id,
-                                    email: user.email,
-                                    firstname: user.given_name,
-                                    lastname: user.family_name,
-                                    photo: user.picture,
-                                    username: user.username,
+                                    id: user.rows[0].id.toString(),
+                                    email: user.rows[0].email,
+                                    firstname: user.rows[0].given_name,
+                                    lastname: user.rows[0].family_name,
+                                    photo: user.rows[0].photo,
+                                    username: user.rows[0].username,
                                 },
                                 process.env.JWT_SECRET,
                                 { expiresIn: "7days" }
@@ -41,41 +38,47 @@ exports.loginUser = (req, res) => {
                                 msg: "Login Success",
                                 data: {
                                     token,
-                                    user_info: user,
+                                    user_info: user.rows[0],
                                 },
                             });
                         } else {
-                            prisma.user
-                                .create({
-                                    data: {
-                                        email: response.payload.email,
-                                        firstname: response.payload.given_name,
-                                        lastname: response.payload.family_name,
-                                        photo: response.payload.picture,
-                                    },
-                                })
+                            let query = `insert 
+                                            into 
+                                        hacktoon.User( id, firstname, lastname, email, photo )
+                                            values( uuid(), '${response.payload.given_name}', '${response.payload.family_name}', '${response.payload.email}', '${response.payload.picture}')`;
+
+                            astraClient
+                                .execute(query)
                                 .then((user) => {
-                                    const token = jwt.sign(
-                                        {
-                                            id: user.id.toString(),
-                                            email: user.email,
-                                            firstname: user.given_name,
-                                            lastname: user.family_name,
-                                            photo: user.picture,
-                                            username: user.username,
-                                        },
-                                        process.env.JWT_SECRET,
-                                        { expiresIn: "7days" }
-                                    );
-                                    return res.status(200).json({
-                                        code: 200,
-                                        msg: "Login Success",
-                                        data: {
-                                            token,
-                                            user_info: user,
-                                        },
+                                    let query = `select * from hacktoon.user where email = '${response.payload.email}' allow filtering`;
+
+                                    astraClient.execute(query).then((user) => {
+                                        if (user.rows.length > 0) {
+                                            const token = jwt.sign(
+                                                {
+                                                    id: user.rows[0].id.toString(),
+                                                    email: user.rows[0].email,
+                                                    firstname: user.rows[0].given_name,
+                                                    lastname: user.rows[0].family_name,
+                                                    photo: user.rows[0].photo,
+                                                    username: user.rows[0].username,
+                                                },
+                                                process.env.JWT_SECRET,
+                                                { expiresIn: "7days" }
+                                            );
+                                            return res.status(200).json({
+                                                code: 200,
+                                                msg: "Login Success",
+                                                data: {
+                                                    token,
+                                                    user_info: user.rows[0],
+                                                },
+                                            });
+                                        }
                                     });
-                                });
+                                })
+
+                                .catch(console.log);
                         }
                     })
                     .catch((err) => {
@@ -83,7 +86,6 @@ exports.loginUser = (req, res) => {
                     });
             })
             .catch((err) => {
-                console.log(err);
                 res.status(500).send({ code: 500, msg: "Google Auth Failed" });
             });
     } catch (e) {
@@ -94,24 +96,23 @@ exports.loginUser = (req, res) => {
 exports.search = (req, res) => {
     try {
         const username = req.query.username;
-        prisma.user
-            .findUnique({
-                where: {
-                    username,
-                },
-            })
+        let query = `select * from hacktoon.User where username = '${username}' allow filtering`;
+
+        astraClient
+            .execute(query)
             .then((user) => {
                 if (user) {
                     res.status(200).json({
                         code: 200,
                         msg: "User found",
-                        data: user,
+                        data: user.rows,
                     });
                 } else {
                     res.status(404).send({ code: 500, msg: "User not found" });
                 }
             })
             .catch((err) => {
+                console.log(err);
                 res.status(500).send({ code: 500, msg: "Internal server error" });
             });
     } catch (e) {
