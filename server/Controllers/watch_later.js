@@ -2,11 +2,11 @@ const async = require("async");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const astraClient = require("../connect-database");
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 exports.all = (req, res) => {
     try {
