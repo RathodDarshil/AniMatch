@@ -5,12 +5,9 @@ RUN npm install
 COPY . .
 EXPOSE 8080
 
-ENV DATABASE_URL="postgresql://postgres:a6s5d1f&^IDS&^@chat-app.cux8m74ubqle.ap-south-1.rds.amazonaws.com:5432/postgres"
-ENV GOOGLE_CLIENT_ID='1020854869671-mk8h2s2iburg333vqhdibqb5i1mh4jl8.apps.googleusercontent.com'
+
 ENV PORT='8080'
-ENV JWT_SECRET="yyrasd<^8asd9QHR:}~dLasdAcv7~;e"
-ENV astrausername="xokChZJpZLNuMwRSUSPvCiAg"
-ENV astrapassword="JJ-SoOFfNZTZzgP9j35pbHSlaBFTULpe,k25OaTSPr,yANLNnW0ci5_T7qQq9FYio5z8gYvMTGKOikSztA81gDioazaoJgav+TzZf8r_5-NnK6nPxXRdDWZJpkOb6T66"
+
 
 CMD ["node", "server.js" ]
 
